@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Gemini AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success { border-color: #4CAF50; background-color: #f8fff8; }
+        .error { border-color: #f44336; background-color: #fff8f8; }
+        .loading { border-color: #2196F3; background-color: #f8f9ff; }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Gemini AI</h1>
+        
+        <div class="test-section">
+            <h2>Información de API</h2>
+            <p><strong>API Key:</strong> AIzaSyBdoljmePzbjevt7cnc5XA7RKNNrreJyZQ</p>
+            <p><strong>Modelo:</strong> gemini-1.5-flash</p>
+        </div>
+
+        <div class="test-section">
+            <h2>Test de Conexión</h2>
+            <button id="testBtn" onclick="testGemini()">Probar Gemini AI</button>
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test de Imagen (opcional)</h2>
+            <input type="file" id="imageInput" accept="image/*" />
+            <button onclick="testGeminiWithImage()">Probar con Imagen</button>
+            <div id="imageResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
+
+        const API_KEY = 'AIzaSyBdoljmePzbjevt7cnc5XA7RKNNrreJyZQ';
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        window.testGemini = async function() {
+            const testBtn = document.getElementById('testBtn');
+            const resultDiv = document.getElementById('result');
+            
+            testBtn.disabled = true;
+            testBtn.textContent = 'Probando...';
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = '🔄 Conectando con Gemini AI...';
+            resultDiv.className = 'result loading';
+
+            try {
+                const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+                const prompt = 'Hola, soy un asistente médico. ¿Puedes ayudarme con una consulta médica básica? Responde en español.';
+                
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                const text = response.text();
+                
+                resultDiv.textContent = '✅ ÉXITO!\n\nRespuesta de Gemini:\n' + text;
+                resultDiv.className = 'result success';
+                
+            } catch (error) {
+                resultDiv.textContent = '❌ ERROR:\n' + error.message + '\n\nDetalles:\n' + JSON.stringify(error, null, 2);
+                resultDiv.className = 'result error';
+            } finally {
+                testBtn.disabled = false;
+                testBtn.textContent = 'Probar Gemini AI';
+            }
+        };
+
+        window.testGeminiWithImage = async function() {
+            const imageInput = document.getElementById('imageInput');
+            const imageResult = document.getElementById('imageResult');
+            
+            if (!imageInput.files[0]) {
+                alert('Por favor selecciona una imagen primero');
+                return;
+            }
+
+            imageResult.style.display = 'block';
+            imageResult.textContent = '🔄 Analizando imagen...';
+            imageResult.className = 'result loading';
+
+            try {
+                const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+                const file = imageInput.files[0];
+                
+                // Convertir imagen a base64
+                const imageBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+                    reader.readAsDataURL(file);
+                });
+
+                const prompt = 'Analiza esta imagen médica y describe qué tipo de examen es y qué especialidad médica debería revisarla.';
+                
+                const result = await model.generateContent([prompt, {
+                    inlineData: {
+                        data: imageBase64,
+                        mimeType: file.type
+                    }
+                }]);
+                
+                const response = await result.response;
+                const text = response.text();
+                
+                imageResult.textContent = '✅ ANÁLISIS EXITOSO!\n\nRespuesta de Gemini Vision:\n' + text;
+                imageResult.className = 'result success';
+                
+            } catch (error) {
+                imageResult.textContent = '❌ ERROR EN ANÁLISIS:\n' + error.message;
+                imageResult.className = 'result error';
+            }
+        };
+    </script>
+</body>
+</html>

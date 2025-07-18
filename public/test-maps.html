@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Google Maps API</title>
+</head>
+<body>
+    <h1>Test Google Maps API</h1>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <div id="status"></div>
+
+    <script>
+        function initMap() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: -12.0464, lng: -77.0428 }, // Lima
+                    zoom: 13
+                });
+
+                // Agregar un marcador
+                const marker = new google.maps.Marker({
+                    position: { lat: -12.0464, lng: -77.0428 },
+                    map: map,
+                    title: 'Lima, Perú'
+                });
+
+                statusDiv.innerHTML = '<span style="color: green;">✅ Google Maps API funcionando correctamente</span>';
+            } catch (error) {
+                statusDiv.innerHTML = '<span style="color: red;">❌ Error: ' + error.message + '</span>';
+            }
+        }
+
+        function handleApiError() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<span style="color: red;">❌ Error al cargar Google Maps API. Verifica que las APIs estén habilitadas.</span>';
+        }
+    </script>
+    
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqBeFYbKxcWqBlDBbosaZ7w6xRChxcuZY&callback=initMap&onerror=handleApiError">
+    </script>
+</body>
+</html>
