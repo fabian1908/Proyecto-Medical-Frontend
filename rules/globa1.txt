@@ -1,0 +1,16 @@
+# globa1.txt
+
+Reglas globales para una web app de gestión médica con autenticación por roles, manejo de citas, perfiles y chatbot, desarrollada en React con TailwindCSS y Lucide React. Todas las llamadas a API se hacen con Axios al puerto 8081, se declaran las interfacez en /src/interfaces y los metodos llamados con axios del puerto de /src/api. 
+
+## Directrices
+
+- Usar **React** como framework principal.
+- Estilizar toda la aplicación con **TailwindCSS**.
+- Usar **Lucide React** para los íconos.
+- Utilizar **Axios** para todas las llamadas HTTP a `http://localhost:8081`. 
+- Aplicar **useState**, **useEffect** y **Context API** para manejo de estado y autenticación.
+- El diseño debe ser limpio, profesional y responsive.
+- Estructurar componentes en carpetas lógicas: `/pages`, `/components`, `/api`, `/hooks`.
+- Cumplir reglas de accesibilidad básicas (uso de labels, alt en imágenes, etc).
+- Utilizar formato **PascalCase** para nombres de componentes.
+- Separar la lógica de negocio de la presentación en componentes.

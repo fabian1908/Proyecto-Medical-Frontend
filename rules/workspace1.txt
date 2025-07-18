@@ -1,0 +1,29 @@
+# workspace1.txt
+
+Reglas específicas para el espacio de trabajo del proyecto de plataforma médica con gestión de usuarios, doctores, citas, pagos y chatbot.
+
+## Directrices
+
+- Implementar **autenticación** con tres roles: `admin`, `doctor` y `usuario`.
+- Redirigir al login según el tipo de usuario:
+  - Admin → `/admin/dashboard`
+  - Doctor → `/doctor/dashboard`
+  - Usuario → `/usuario/dashboard`
+- Las entidades principales son:
+  - personas, usuarios, doctores, admins
+  - citas, horarios, reseñas, recetas, mensajes, pagos
+- Las funciones deben incluir:
+  - Login y registro
+  - CRUD para admin sobre base de datos
+  - Filtros para buscar servicios médicos: consulta online, fechas disponibles, seguros de salud, especialidad, ubicación, calificación
+  - Visualización de servicios médicos agrupados por especialidad y ubicación
+  - Visualización del perfil completo del doctor con múltiples ubicaciones
+  - Agenda semanal (calendario) con disponibilidad por doctor y ubicación
+  - Solicitar cita desde calendario disponible, pagar, ver estado y receta
+  - Bandeja de entrada para usuario y doctor
+  - Perfil LinkedIn para que un profesional de salud se registre como doctor
+  - Chatbot con IA para recomendar especialidad médica y redirigir con filtros aplicados
+- Todos los perfiles pueden modificar su información personal y métodos de pago.
+- Las APIs deben permitir lectura, actualización, eliminación y creación según las funcionalidades.
+- Las imágenes de doctores u otros están en la carpeta `assets/img`.
+
