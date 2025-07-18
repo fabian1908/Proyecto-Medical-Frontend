@@ -1,26 +1,38 @@
-## Pasos para iniciar el proyecto
+# React + TypeScript + Vite
 
-1. Clona este repositorio:
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Ingresa a la ruta donde descargar el proyecto con Power Shell
+Currently, two official plugins are available:
 
-```bash
-git clone https://github.com/RafaelSolier/Proyecto-DS.git
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
 ```
-2. En el terminal crea nuevo contenedor:
 
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Expanding the ESLint configuration
+Para lanzar el servidor de json y simular el backend
 ```bash
-docker run -p 5555:5432 --name e2e-postgres -e POSTGRES_PASSWORD=123 -d postgres
-```
-3. En el navegador verificar:
+npm install json-server
 
-```bash
-http://localhost:8080/actuator
-```
-
-4. Ingresar a la ruta del frontend y en el terminal:
-
-```bash
-npm install 
-npm run dev 
+node server.js
 ```
